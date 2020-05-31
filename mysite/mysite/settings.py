@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'cors'
 ]
 
 MIDDLEWARE = [
@@ -122,21 +123,23 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-REST_FRAMEWORK={
-    'DEFAULT_PERMISSION_CLASS':(
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_AUTHENTICATION_CLASS':(
-        'rest_framework_jwt.authentication.JSONWebAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-    )
+    ),
+}
+# default payload handler
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'mysite.utils.my_jwt_response_handler'
 }
 
-JWT_AUTH ={
-    'JWT_RESPONSE_PAYLOAD_HANDLER':'mysite.utils.my_jwt_response_handler'
-}
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST=[
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://localhost:5000'
 ]
